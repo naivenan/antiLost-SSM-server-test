@@ -27,12 +27,13 @@ public class WxUserController {
 	}
 	
 	@RequestMapping("/register")
-	Map<String, Object> register(String user,String pswd,String tel){
+	Map<String, Object> register(String user,String pswd,String tel,String token){
 		Map<String, Object> result = new HashMap<>();
 		User record = new User();
 		record.setUsername(user);
 		record.setPassword(pswd);
 		record.setMobile(tel);
+		record.setVerifyCode(token);
 		record.setType(1);
 		Map<String, Object> map = wxUserService.register(record);
 		result.put("data", map);
@@ -76,16 +77,30 @@ public class WxUserController {
 		return result;
 	}
 	
-	@RequestMapping("/update")
-	Map<String, Object> update(long id,String mphone,String birthday){
+	@RequestMapping("/updateMobile")
+	Map<String, Object> updateMobile(long id,String mphone,String token){
 		Map<String, Object> result = new HashMap<>();
 		User user = new User();
 		user.setId(id);
 		user.setMobile(mphone);
+		user.setVerifyCode(token);
+		int data = wxUserService.updateMobile(user);
+		result.put("code", StatusCode.SUCCESS_CODE);
+		result.put("data", data);
+		return result;
+	}
+	
+	@RequestMapping("/update")
+	Map<String, Object> update(long id,String birthday,String imgUrl){
+		Map<String, Object> result = new HashMap<>();
+		User user = new User();
+		user.setId(id);
 		user.setBirthday(birthday);
+		user.setHeadPic(imgUrl);
 		int data = wxUserService.update(user);
 		result.put("code", StatusCode.SUCCESS_CODE);
 		result.put("data", data);
 		return result;
 	}
+	
 }

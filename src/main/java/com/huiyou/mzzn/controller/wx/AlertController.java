@@ -8,32 +8,38 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.huiyou.mzzn.model.UserBind;
+import com.huiyou.mzzn.model.UserBindExample;
 import com.huiyou.mzzn.pojo.AlertList;
+import com.huiyou.mzzn.service.UserBindService;
 import com.huiyou.mzzn.service.wx.AlertService;
 import com.huiyou.mzzn.utils.StatusCode;
 
 @RestController
 @RequestMapping("/alert")
 public class AlertController {
-	
+
 	@Autowired
 	AlertService alertService;
-	
+	@Autowired
+	UserBindService userBindService;
+
 	@RequestMapping("/list")
-	Map<String, Object> list(int bid){
+	Map<String, Object> list(int bid) {
 		Map<String, Object> result = new HashMap<>();
 		List<AlertList> list = alertService.list(bid);
 		result.put("data", list);
 		result.put("code", StatusCode.SUCCESS_CODE);
 		return result;
 	}
-	
+
 	@RequestMapping("/cancel")
-	Map<String, Object> login(int id){
+	Map<String, Object> login(int id) {
 		Map<String, Object> result = new HashMap<>();
 		int data = alertService.cancel(id);
 		result.put("data", data);
 		result.put("code", StatusCode.SUCCESS_CODE);
 		return result;
 	}
+
 }
